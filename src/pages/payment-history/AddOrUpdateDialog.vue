@@ -60,7 +60,7 @@ import Vue from 'vue';
 export default {
   props: ['paymentHistoryItem'],
   components: {
-    vMoney: () => import('@/components/VMoney')
+    vMoney: () => import('@/components/VMoney/VMoney')
   },
   data: function() {
     return {

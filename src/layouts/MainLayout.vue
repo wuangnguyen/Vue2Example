@@ -30,7 +30,7 @@
 <script>
 export default {
   components: {
-    loadingOverlay: () => import('@/components/LoadingOverlay')
+    loadingOverlay: () => import('@/components/Overlay/LoadingOverlay')
   }
 };
 </script>

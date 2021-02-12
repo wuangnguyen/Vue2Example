@@ -52,7 +52,7 @@ import Vue from 'vue';
 export default {
   props: ['product'],
   components: {
-    vMoney: () => import('@/components/VMoney')
+    vMoney: () => import('@/components/VMoney/VMoney')
   },
   data: function() {
     return {

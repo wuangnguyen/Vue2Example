@@ -8,7 +8,7 @@ export const paymentHistoryRoute = {
       path: '/payment-history',
       components: {
         default: () => import('./PaymentHistory'),
-        subHeader: () => import('@/components/SubHeader')
+        subHeader: () => import('@/components/SubHeader/SubHeader')
       }
     }
   ]

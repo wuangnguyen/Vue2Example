@@ -8,7 +8,7 @@ export const productRoute = {
       path: '/product',
       components: {
         default: () => import('./Product'),
-        subHeader: () => import('@/components/SubHeader')
+        subHeader: () => import('@/components/SubHeader/SubHeader')
       }
     }
   ]
