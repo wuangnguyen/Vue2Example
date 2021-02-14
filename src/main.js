@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import router from './router';
 import vuetify from './plugins/vuetify';
+import filters from './filters';
 import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/theme-default.css';
 import '@/assets/styles/main.scss';
@@ -12,11 +13,10 @@ Vue.use(VueToast, {
   position: 'top-right'
 });
 
-Vue.prototype.$eventBus = new Vue();
-
 new Vue({
   router,
   vuetify,
+  filters,
   render: function(createElement) {
     return createElement('router-view', this.$slots.default);
   }
