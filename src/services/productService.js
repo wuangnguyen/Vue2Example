@@ -13,7 +13,7 @@ class ProductService {
     return http.post('/products', data);
   }
 
-  update(id, data) {
+  update(data) {
     return http.put(`/products`, data);
   }
 

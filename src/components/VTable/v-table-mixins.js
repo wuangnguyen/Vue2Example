@@ -6,7 +6,8 @@ export default dataService => {
         loading: true,
         search: '',
         headers: [],
-        items: []
+        items: [],
+        item: undefined
       };
     },
     methods: {
@@ -60,7 +61,7 @@ export default dataService => {
         this.item = item;
         this.$refs.form.showDialog();
       },
-      ModalFormClosed() {
+      modalFormClosed() {
         this.loadData();
       }
     },
