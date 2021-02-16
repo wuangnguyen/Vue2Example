@@ -29,7 +29,7 @@
     <template v-slot:expanded-item="{ headers, item }">
       <td :colspan="headers.length">
         <div class="my-4 ">
-          <component :is="transactionComponent" @transaction-deleted="loadData()" @transaction-modified="loadData()" :productId="item.id"></component>
+          <component :is="transactionComponent" @close="loadData()" :productId="item.id"></component>
         </div>
       </td>
     </template>
@@ -69,7 +69,13 @@ export default {
         { text: 'Ghi chú', value: 'notes' },
         { text: '', value: 'actions', sortable: false, filterable: false, align: 'right' },
         { text: '', value: 'data-table-expand', filterable: false }
-      ]
+      ],
+      defaultItem: {
+        id: -1,
+        name: '',
+        unit: '',
+        price: 0
+      }
     };
   },
 

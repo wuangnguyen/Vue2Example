@@ -1,18 +1,22 @@
+import Vue from 'vue';
 export default dataService => {
   return {
     props: {
-      model: {
-        type: Object,
-        default() {
-          return undefined;
-        }
-      }
+      model: Object
     },
     methods: {
-      onCreatedSuccessfully() {},
-      onCreatedFailure() {},
-      onUpdatedSuccessfully() {},
-      onUpdatedFailure() {},
+      onCreatedSuccessfully() {
+        Vue.$toast.success('Thêm thành công');
+      },
+      onCreatedFailure() {
+        Vue.$toast.error('Thêm không thành công');
+      },
+      onUpdatedSuccessfully() {
+        Vue.$toast.success('Cập nhật thành công');
+      },
+      onUpdatedFailure() {
+        Vue.$toast.error('Cập nhật không thành công');
+      },
       submit() {
         if (this.model.id === -1) {
           this.handleCreate();

@@ -30,33 +30,14 @@ import Vue from 'vue';
 import dialogMixins from '@/mixins/dialog-mixins';
 import formMixins from '@/mixins/form-mixins';
 export default {
-  props: {
-    model: {
-      type: Object,
-      default() {
-        return {
-          id: -1,
-          name: '',
-          unit: '',
-          price: 0
-        };
-      }
-    }
-  },
   mixins: [dialogMixins, formMixins(productService)],
   components: {
     vMoney: () => import('@/components/VMoney/VMoney'),
     baseModalForm: () => import('@/components/VForm/BaseModalForm')
   },
   methods: {
-    onCreatedSuccessfully() {
-      Vue.$toast.success('Thêm thành công');
-    },
     onCreatedFailure() {
       Vue.$toast.error('Sản phẩm đã tồn tại');
-    },
-    onUpdatedSuccessfully() {
-      Vue.$toast.success('Cập nhật thành công');
     },
     onUpdatedFailure() {
       Vue.$toast.error('Sản phẩm đã tồn tại');

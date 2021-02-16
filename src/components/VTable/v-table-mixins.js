@@ -7,7 +7,8 @@ export default dataService => {
         search: '',
         headers: [],
         items: [],
-        item: undefined
+        defaultItem: {},
+        item: { ...this.defaultItem }
       };
     },
     methods: {
@@ -52,7 +53,7 @@ export default dataService => {
         return value.toString().indexOf(search) !== -1;
       },
       onBtnAddClicked() {
-        this.showModalForm(undefined);
+        this.showModalForm(this.defaultItem);
       },
       editItem(item) {
         this.showModalForm(item);
