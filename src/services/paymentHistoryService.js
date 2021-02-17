@@ -1,7 +1,7 @@
 import http from '@/helpers/http-helper';
 
 class PaymentHistoryService {
-  get() {
+  getAll() {
     return http.get('/paymentHistories');
   }
 
