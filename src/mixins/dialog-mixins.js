@@ -4,19 +4,13 @@ export default {
       isDisplay: false
     };
   },
-  watch: {
-    isDisplay(value) {
-      if (value === false) {
-        this.$emit('close');
-      }
-    }
-  },
   methods: {
     showDialog() {
       this.isDisplay = true;
     },
-    hideDialog() {
+    hideDialog(model) {
       this.isDisplay = false;
+      this.$emit('close', model);
     }
   }
 };

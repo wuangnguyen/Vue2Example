@@ -29,7 +29,7 @@
     <template v-slot:expanded-item="{ headers, item }">
       <td :colspan="headers.length">
         <div class="my-4 ">
-          <component :is="transactionComponent" @close="loadData()" :productId="item.id"></component>
+          <component :is="transactionComponent" @close="onTransactionFormClosed" :productId="item.id"></component>
         </div>
       </td>
     </template>
@@ -80,6 +80,22 @@ export default {
   },
 
   methods: {
+    onTransactionFormClosed(model) {
+      let self = this;
+      self.loading = true;
+      productService
+        .get(model.product_id)
+        .then(response => {
+          let foundIndex = self.items.findIndex(x => x.id == model.product_id);
+          self.items.splice(foundIndex, 1, response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        })
+        .finally(function() {
+          self.loading = false;
+        });
+    },
     onItemExpanded() {
       this.transactionComponent = () => import('@/pages/transaction/Transaction');
     }

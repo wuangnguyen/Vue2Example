@@ -1,62 +1,61 @@
 <template>
-  <div>
-    <v-data-table :loading="loading" :headers="headers" :items="filteredTransactions" :items-per-page="-1" hide-default-footer :no-data-text="'Chưa có dữ liệu'" class="elevation-1 orange lighten-5">
-      <template v-slot:top>
-        <v-toolbar flat>
-          <v-select dense class="mt-6" v-model="selectedCategoryId" :items="transactionTypes" item-text="name" item-value="id" label="Loại"></v-select>
-          <v-spacer></v-spacer>
-          <v-btn color="secondary" @click="onBtnAddClicked">
-            <v-icon small>
-              fa-plus
-            </v-icon>
-          </v-btn>
-          <component :is="addOrUpdateDialog" :transactionItem="transactionItem" @transaction-modified="$emit('transaction-modified')" @close="onAddEditDialogClose"></component>
-        </v-toolbar>
-      </template>
-      <template v-slot:item.date="{ item }">
-        {{ formatDate(item.date) }}
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <v-icon class="mx-1" small @click="editItem(item)">
-          fa-edit
-        </v-icon>
-        <v-icon class="mx-1" small @click="deleteItem(item)">
-          fa-trash-alt
-        </v-icon>
-      </template>
-    </v-data-table>
-    <v-dialog persistent v-model="displayDeleteDialog" max-width="500px">
-      <v-card>
-        <v-card-title class="headline"> Xóa giao dịch này? </v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="displayDeleteDialog = false">Hủy</v-btn>
-          <v-btn color="blue darken-1" text @click="confirmDelete">Đồng ý</v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+  <v-table :headers="headers" :items="filteredTransactions" :loading="loading" class="elevation-1 orange lighten-5">
+    <template v-slot:top>
+      <v-toolbar flat>
+        <v-select dense class="mt-6" v-model="selectedCategoryId" :items="transactionTypes" item-text="name" item-value="id" label="Loại"></v-select>
+        <v-spacer></v-spacer>
+        <v-btn color="secondary" @click="onBtnAddClicked">
+          <v-icon small>
+            fa-plus
+          </v-icon>
+        </v-btn>
+        <modal-form ref="form" @close="modalFormClosed" :productId="productId" :model="item" />
+        <v-dialog persistent v-model="displayDeleteDialog" max-width="300px">
+          <v-card>
+            <v-card-title class="headline"> Xóa giao dịch này? </v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="displayDeleteDialog = false">Hủy</v-btn>
+              <v-btn color="blue darken-1" text @click="confirmDelete">Đồng ý</v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-toolbar>
+    </template>
+    <template v-slot:item.date="{ item }">
+      {{ item.date | date }}
+    </template>
+    <template v-slot:item.actions="{ item }">
+      <v-icon class="mx-1" small @click="editItem(item)">
+        fa-edit
+      </v-icon>
+      <v-icon class="mx-1" small @click="deleteItem(item)">
+        fa-trash-alt
+      </v-icon>
+    </template>
+  </v-table>
 </template>
 
 <script>
 import transactionService from '@/services/transactionService';
 import Vue from 'vue';
+import tableMixins from '@/components/VTable/v-table-mixins';
 export default {
   props: ['productId'],
   components: {
-    addOrUpdateDialog: () => import('./AddOrUpdateDialog')
+    vTable: () => import('@/components/VTable/VTable'),
+    modalForm: () => import('./TransactionForm')
   },
+  mixins: [tableMixins(transactionService)],
   data: function() {
     return {
-      loading: false,
       transactionTypes: [
         { id: 0, name: '' },
         { id: 1, name: 'Nhập' },
         { id: 2, name: 'Xuất' }
       ],
       selectedCategoryId: null,
-      addOrUpdateDialog: '',
       displayDeleteDialog: false,
       headers: [
         { text: 'Ngày', value: 'date' },
@@ -65,64 +64,54 @@ export default {
         { text: 'Ghi chú', value: 'notes' },
         { text: '', value: 'actions', sortable: false, align: 'right' }
       ],
-      transactions: [],
-      defaultTransactionItem: {
+      defaultItem: {
         id: -1,
         category_id: 1,
         product_id: this.productId,
         date: new Date().toISOString().substr(0, 10),
         quantity: 0,
         notes: ''
-      },
-      transactionItem: null
+      }
     };
   },
   computed: {
     filteredTransactions() {
       if (!this.selectedCategoryId) {
-        return this.transactions;
+        return this.items;
       }
-      return this.transactions.filter(x => x.category_id == this.selectedCategoryId);
+      return this.items.filter(x => x.category_id == this.selectedCategoryId);
     }
   },
   methods: {
-    loadTransactions() {
-      this.transactionItem = { ...this.defaultTransactionItem };
-      this.loading = true;
+    loadData() {
+      let self = this;
+      self.loading = true;
       transactionService
-        .get(this.productId)
+        .get(self.productId)
         .then(response => {
-          this.transactions = response.data;
-          this.transactions.forEach(item => (item.date = new Date(item.date).toISOString().substr(0, 10)));
+          self.items = response.data;
         })
         .catch(e => {
           console.log(e);
         })
-        .finally(() => (this.loading = false));
+        .finally(function() {
+          self.loading = false;
+        });
     },
-    onBtnAddClicked() {
-      this.addOrUpdateDialog = 'addOrUpdateDialog';
-      console.log(this.transactionItem);
+    modalFormClosed(model) {
+      this.loadData();
+      this.$emit('close', model);
     },
-    onAddEditDialogClose() {
-      this.addOrUpdateDialog = '';
-      this.loadTransactions();
-    },
-    editItem(transactionItem) {
-      this.transactionItem = transactionItem;
-      this.addOrUpdateDialog = 'addOrUpdateDialog';
-    },
-    deleteItem(transactionItem) {
+    deleteItem(item) {
       this.displayDeleteDialog = true;
-      this.transactionItem = transactionItem;
+      this.item = item;
     },
     confirmDelete() {
       let self = this;
       transactionService
-        .delete(this.transactionItem.id)
+        .delete(self.item.id)
         .then(() => {
           Vue.$toast.success('Xóa thành công');
-          self.$emit('transaction-deleted');
         })
         .catch(e => {
           Vue.$toast.error('Xảy ra lỗi khi xóa');
@@ -130,18 +119,9 @@ export default {
         })
         .finally(() => {
           self.displayDeleteDialog = false;
-          self.loadTransactions();
+          self.modalFormClosed(self.item);
         });
-    },
-    formatDate(date) {
-      if (!date) return null;
-
-      const [year, month, day] = date.split('-');
-      return `${day}/${month}/${year}`;
     }
-  },
-  created() {
-    this.loadTransactions();
   }
 };
 </script>

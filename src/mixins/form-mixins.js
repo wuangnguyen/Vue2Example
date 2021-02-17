@@ -30,7 +30,7 @@ export default dataService => {
           .create(this.model)
           .then(() => {
             self.onCreatedSuccessfully();
-            self.hideDialog();
+            self.hideDialog(self.model);
           })
           .catch(() => {
             self.onCreatedFailure();
@@ -42,7 +42,7 @@ export default dataService => {
           .update(this.model)
           .then(() => {
             self.onUpdatedSuccessfully();
-            this.hideDialog();
+            self.hideDialog(self.model);
           })
           .catch(() => {
             self.onUpdatedFailure();
