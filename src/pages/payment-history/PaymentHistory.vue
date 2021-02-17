@@ -32,7 +32,7 @@
       </th>
     </template>
     <template v-slot:item.amount="{ item }">
-      {{ item.amount | currency }}
+      <span :class="{ 'money pa-1 rounded': true, 'green darken-1': item.category_id === 3, 'deep-orange accent-4': item.category_id === 4 }">{{ item.amount | currency }}</span>
     </template>
     <template v-slot:item.date="{ item }">
       {{ item.date | date }}
@@ -61,7 +61,7 @@ export default {
   data: function() {
     return {
       paymentHistoryTypes: [
-        { id: 0, name: '' },
+        { id: 0, name: 'Tất cả' },
         { id: 3, name: 'Thu' },
         { id: 4, name: 'Chi' }
       ],
@@ -116,3 +116,8 @@ export default {
   }
 };
 </script>
+<style>
+.money {
+  color: #fff;
+}
+</style>

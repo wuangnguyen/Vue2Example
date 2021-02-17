@@ -51,7 +51,7 @@ export default {
   data: function() {
     return {
       transactionTypes: [
-        { id: 0, name: '' },
+        { id: 0, name: 'Tất cả' },
         { id: 1, name: 'Nhập' },
         { id: 2, name: 'Xuất' }
       ],
