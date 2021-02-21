@@ -60,7 +60,7 @@ export default dataService => {
       },
       showModalForm(item) {
         this.item = item;
-        this.$refs.form.showDialog();
+        this.$refs.form.showModalForm();
       },
       modalFormClosed() {
         this.loadData();

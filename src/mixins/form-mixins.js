@@ -1,10 +1,19 @@
 import Vue from 'vue';
+import { toVnFormat } from '@/helpers/date-helper';
 export default dataService => {
   return {
     props: {
       model: Object
     },
+    computed: {
+      computedDateFormatted() {
+        return toVnFormat(this.model.date);
+      }
+    },
     methods: {
+      showModalForm() {
+        this.$refs.baseModalForm.showDialog();
+      },
       onCreatedSuccessfully() {
         Vue.$toast.success('Thêm thành công');
       },
@@ -17,6 +26,9 @@ export default dataService => {
       onUpdatedFailure() {
         Vue.$toast.error('Cập nhật không thành công');
       },
+      close(model) {
+        this.$emit('close', model);
+      },
       submit() {
         if (this.model.id === -1) {
           this.handleCreate();
@@ -27,10 +39,10 @@ export default dataService => {
       handleCreate() {
         let self = this;
         dataService
-          .create(this.model)
+          .create(self.model)
           .then(() => {
             self.onCreatedSuccessfully();
-            self.hideDialog(self.model);
+            self.$refs.baseModalForm.hideDialog(self.model);
           })
           .catch(() => {
             self.onCreatedFailure();
@@ -39,10 +51,10 @@ export default dataService => {
       handleUpdate() {
         let self = this;
         dataService
-          .update(this.model)
+          .update(self.model)
           .then(() => {
             self.onUpdatedSuccessfully();
-            self.hideDialog(self.model);
+            self.$refs.baseModalForm.hideDialog(self.model);
           })
           .catch(() => {
             self.onUpdatedFailure();

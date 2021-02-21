@@ -1,5 +1,5 @@
 <template>
-  <base-modal-form :isDisplay.sync="isDisplay" @submit="submit">
+  <base-modal-form ref="baseModalForm" @close="close" @submit="submit">
     <template #title>{{ model.id === -1 ? 'Thêm mới nhập/xuất' : 'Cập nhật nhập/xuất' }}</template>
     <v-container>
       <v-row>
@@ -29,9 +29,7 @@
 
 <script>
 import transactionService from '@/services/transactionService';
-import dialogMixins from '@/mixins/dialog-mixins';
 import formMixins from '@/mixins/form-mixins';
-import { toVnFormat } from '@/helpers/date-helper';
 export default {
   props: {
     productId: {
@@ -39,7 +37,7 @@ export default {
       required: true
     }
   },
-  mixins: [dialogMixins, formMixins(transactionService)],
+  mixins: [formMixins(transactionService)],
   components: {
     baseModalForm: () => import('@/components/VForm/BaseModalForm')
   },
@@ -51,11 +49,6 @@ export default {
         { id: 2, name: 'Xuất' }
       ]
     };
-  },
-  computed: {
-    computedDateFormatted() {
-      return toVnFormat(this.model.date);
-    }
   }
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <base-modal-form :isDisplay.sync="isDisplay" @submit="submit">
+  <base-modal-form ref="baseModalForm" @close="close" @submit="submit">
     <template #title>{{ model.id === -1 ? 'Thêm mới sản phẩm' : 'Cập nhật sản phẩm' }}</template>
     <v-container>
       <v-row>
@@ -27,10 +27,9 @@
 <script>
 import productService from '@/services/productService';
 import Vue from 'vue';
-import dialogMixins from '@/mixins/dialog-mixins';
 import formMixins from '@/mixins/form-mixins';
 export default {
-  mixins: [dialogMixins, formMixins(productService)],
+  mixins: [formMixins(productService)],
   components: {
     vMoney: () => import('@/components/VMoney/VMoney'),
     baseModalForm: () => import('@/components/VForm/BaseModalForm')

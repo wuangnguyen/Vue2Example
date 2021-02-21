@@ -1,5 +1,5 @@
 <template>
-  <base-modal-form :isDisplay.sync="isDisplay" @submit="submit">
+  <base-modal-form ref="baseModalForm" @close="close" @submit="submit">
     <template #title>{{ model.id === -1 ? 'Thêm mới thu/chi' : 'Cập nhật thu/chi' }}</template>
     <v-container>
       <v-row>
@@ -34,11 +34,9 @@
 
 <script>
 import paymentHistoryService from '@/services/paymentHistoryService';
-import dialogMixins from '@/mixins/dialog-mixins';
 import formMixins from '@/mixins/form-mixins';
-import { toVnFormat } from '@/helpers/date-helper';
 export default {
-  mixins: [dialogMixins, formMixins(paymentHistoryService)],
+  mixins: [formMixins(paymentHistoryService)],
   components: {
     vMoney: () => import('@/components/VMoney/VMoney'),
     baseModalForm: () => import('@/components/VForm/BaseModalForm')
@@ -51,11 +49,6 @@ export default {
         { id: 4, name: 'Chi' }
       ]
     };
-  },
-  computed: {
-    computedDateFormatted() {
-      return toVnFormat(this.model.date);
-    }
   }
 };
 </script>
