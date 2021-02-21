@@ -79,7 +79,7 @@ export default {
         id: -1,
         category_id: 4,
         date: new Date().toISOString().substr(0, 10),
-        quantity: 0,
+        created_by: '',
         notes: ''
       }
     };
