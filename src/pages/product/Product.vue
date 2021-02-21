@@ -81,6 +81,9 @@ export default {
 
   methods: {
     onTransactionFormClosed(model) {
+      if (!model) {
+        return;
+      }
       let self = this;
       self.loading = true;
       productService

@@ -33,7 +33,6 @@ export default {
   methods: {
     close() {
       this.hideDialog();
-      this.$emit('close');
     },
     summit() {
       this.isFormValid = this.$refs.form.validate();

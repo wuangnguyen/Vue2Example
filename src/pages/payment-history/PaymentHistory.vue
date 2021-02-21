@@ -12,17 +12,7 @@
           </v-icon>
         </v-btn>
         <modal-form ref="form" @close="modalFormClosed" :model="item" />
-        <v-dialog persistent v-model="displayDeleteDialog" max-width="300px">
-          <v-card>
-            <v-card-title class="headline"> Xóa dòng này? </v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="displayDeleteDialog = false">Hủy</v-btn>
-              <v-btn color="blue darken-1" text @click="confirmDelete">Đồng ý</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        <confirm-dialog ref="deleteDialog" @close="modalFormClosed" @confirm="handleDelete"></confirm-dialog>
       </v-toolbar>
     </template>
     <template v-slot:group.header="{ items, headers, isOpen, toggle }">
@@ -51,11 +41,11 @@
 <script>
 import paymentHistoryService from '@/services/paymentHistoryService';
 import tableMixins from '@/components/VTable/v-table-mixins';
-import Vue from 'vue';
 export default {
   components: {
     vTable: () => import('@/components/VTable/VTable'),
-    modalForm: () => import('./PaymentHistoryForm')
+    modalForm: () => import('./PaymentHistoryForm'),
+    confirmDialog: () => import('@/components/VDialog/ConfirmDialog')
   },
   mixins: [tableMixins(paymentHistoryService)],
   data: function() {
@@ -90,28 +80,6 @@ export default {
         return this.items;
       }
       return this.items.filter(x => x.category_id == this.selectedCategoryId);
-    }
-  },
-  methods: {
-    deleteItem(item) {
-      this.displayDeleteDialog = true;
-      this.item = item;
-    },
-    confirmDelete() {
-      let self = this;
-      paymentHistoryService
-        .delete(this.item.id)
-        .then(() => {
-          Vue.$toast.success('Xóa thành công');
-        })
-        .catch(e => {
-          Vue.$toast.error('Xảy ra lỗi khi xóa');
-          console.log(e);
-        })
-        .finally(() => {
-          self.displayDeleteDialog = false;
-          self.loadData();
-        });
     }
   }
 };

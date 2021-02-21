@@ -1,5 +1,5 @@
 <template>
-  <v-dialog persistent v-model="isDisplay" v-bind="$attrs" max-width="800px">
+  <v-dialog persistent v-model="isDisplay" :max-width="maxWidth">
     <v-card>
       <v-card-title>
         <span class="headline"><slot name="title"/></span>
@@ -15,6 +15,12 @@
 </template>
 <script>
 export default {
-  props: ['isDisplay']
+  props: {
+    isDisplay: Boolean,
+    maxWidth: {
+      type: String,
+      default: '800px'
+    }
+  }
 };
 </script>

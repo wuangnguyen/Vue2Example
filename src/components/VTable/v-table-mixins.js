@@ -1,4 +1,5 @@
 import { removeUnicode } from '@/helpers/string-helper';
+import Vue from 'vue';
 export default dataService => {
   return {
     data() {
@@ -58,12 +59,31 @@ export default dataService => {
       editItem(item) {
         this.showModalForm(item);
       },
+      deleteItem(item) {
+        this.item = item;
+        this.$refs.deleteDialog.showDialog();
+      },
       showModalForm(item) {
         this.item = item;
         this.$refs.form.showModalForm();
       },
       modalFormClosed() {
         this.loadData();
+      },
+      handleDelete() {
+        let self = this;
+        dataService
+          .delete(self.item.id)
+          .then(() => {
+            Vue.$toast.success('Xóa thành công');
+          })
+          .catch(e => {
+            Vue.$toast.error('Xảy ra lỗi khi xóa');
+            console.log(e);
+          })
+          .finally(() => {
+            self.$refs.deleteDialog.hideDialog(self.item);
+          });
       }
     },
     created() {

@@ -10,17 +10,7 @@
           </v-icon>
         </v-btn>
         <modal-form ref="form" @close="modalFormClosed" :productId="productId" :model="item" />
-        <v-dialog persistent v-model="displayDeleteDialog" max-width="300px">
-          <v-card>
-            <v-card-title class="headline"> Xóa giao dịch này? </v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="displayDeleteDialog = false">Hủy</v-btn>
-              <v-btn color="blue darken-1" text @click="confirmDelete">Đồng ý</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        <confirm-dialog ref="deleteDialog" @close="modalFormClosed" @confirm="handleDelete"></confirm-dialog>
       </v-toolbar>
     </template>
     <template v-slot:item.date="{ item }">
@@ -39,13 +29,13 @@
 
 <script>
 import transactionService from '@/services/transactionService';
-import Vue from 'vue';
 import tableMixins from '@/components/VTable/v-table-mixins';
 export default {
   props: ['productId'],
   components: {
     vTable: () => import('@/components/VTable/VTable'),
-    modalForm: () => import('./TransactionForm')
+    modalForm: () => import('./TransactionForm'),
+    confirmDialog: () => import('@/components/VDialog/ConfirmDialog')
   },
   mixins: [tableMixins(transactionService)],
   data: function() {
@@ -101,26 +91,6 @@ export default {
     modalFormClosed(model) {
       this.loadData();
       this.$emit('close', model);
-    },
-    deleteItem(item) {
-      this.displayDeleteDialog = true;
-      this.item = item;
-    },
-    confirmDelete() {
-      let self = this;
-      transactionService
-        .delete(self.item.id)
-        .then(() => {
-          Vue.$toast.success('Xóa thành công');
-        })
-        .catch(e => {
-          Vue.$toast.error('Xảy ra lỗi khi xóa');
-          console.log(e);
-        })
-        .finally(() => {
-          self.displayDeleteDialog = false;
-          self.modalFormClosed(self.item);
-        });
     }
   }
 };
