@@ -1,10 +1,24 @@
 <template>
-  <v-table group-by="date" group-desc :headers="headers" :loading="loading" :search="search" :custom-filter="customFilter" :items="filteredPaymentHistories" class="elevation-1">
+  <v-table group-by="date" @current-items="currentItems" group-desc :headers="headers" :loading="loading" :search="search" :custom-filter="customFilter" :items="items" class="elevation-1">
     <template v-slot:top>
       <v-toolbar flat>
         <v-text-field v-model="search" label="Tìm kiếm" class="mt-6"></v-text-field>
         <v-spacer></v-spacer>
-        <v-select dense class="mt-6" v-model="selectedCategoryId" :items="paymentHistoryTypes" item-text="name" item-value="id" label="Loại"></v-select>
+        <v-select class="mt-6" dense v-model="selectedCategoryId" :items="paymentHistoryTypes" item-text="name" item-value="id" label="Loại"></v-select>
+        <v-spacer></v-spacer>
+        <v-menu v-model="fromDateMenu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field class="mt-6" clearable @click:clear="fromDate = null" :value="computedFromDateFormatted" label="Từ ngày" readonly v-bind="attrs" v-on="on"></v-text-field>
+          </template>
+          <v-date-picker locale="vi-vn" v-model="fromDate" @input="fromDateMenu = false"></v-date-picker>
+        </v-menu>
+        <v-spacer></v-spacer>
+        <v-menu v-model="toDateMenu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field class="mt-6" clearable @click:clear="toDate = null" :value="computedToDateFormatted" label="Đến ngày" readonly v-bind="attrs" v-on="on"></v-text-field>
+          </template>
+          <v-date-picker locale="vi-vn" v-model="toDate" @input="toDateMenu = false"></v-date-picker>
+        </v-menu>
         <v-spacer></v-spacer>
         <v-btn color="secondary" @click="onBtnAddClicked">
           <v-icon small>
@@ -18,11 +32,11 @@
     <template v-slot:group.header="{ items, headers, isOpen, toggle }">
       <th :colspan="headers.length">
         <v-icon left small @click="toggle">{{ isOpen ? 'fa-minus' : 'fa-plus' }} </v-icon>
-        {{ items[0].date | date }}
+        {{ items[0].date | date }} => Thu: {{ getTotalAmount(items, 3) | currency }} / Chi: {{ getTotalAmount(items, 4) | currency }}
       </th>
     </template>
     <template v-slot:item.amount="{ item }">
-      <span :class="{ 'money pa-1 rounded': true, 'green darken-1': item.category_id === 3, 'deep-orange accent-4': item.category_id === 4 }">{{ item.amount | currency }}</span>
+      {{ item.amount | currency }}
     </template>
     <template v-slot:item.date="{ item }">
       {{ item.date | date }}
@@ -35,10 +49,24 @@
         fa-trash-alt
       </v-icon>
     </template>
+    <template slot="body.append">
+      <tr class="grey lighten-1">
+        <td :colspan="headers.length">
+          <span class="ma-2">
+            Tổng thu: <b class="money pa-1 rounded green darken-1">{{ totalImport | currency }}</b>
+          </span>
+          /
+          <span class="ma-2">
+            Tổng chi: <b class="money ma-2 pa-1 rounded deep-orange accent-4">{{ totalExport | currency }}</b>
+          </span>
+        </td>
+      </tr>
+    </template>
   </v-table>
 </template>
 
 <script>
+import { toVnFormat } from '@/helpers/date-helper';
 import paymentHistoryService from '@/services/paymentHistoryService';
 import tableMixins from '@/components/VTable/v-table-mixins';
 export default {
@@ -58,8 +86,9 @@ export default {
       selectedCategoryId: null,
       displayDeleteDialog: false,
       headers: [
-        { text: 'Ngày', value: 'date' },
+        { text: 'Ngày', value: 'date', filter: this.dateFilter },
         { text: 'Loại', value: 'payment_history_type', filterable: false },
+        { text: 'Loại', value: 'category_id', align: ' d-none', filter: this.categoryFilter },
         { text: 'Số tiền', value: 'amount' },
         { text: 'Người thực hiện', value: 'created_by' },
         { text: 'Ghi chú', value: 'notes' },
@@ -71,15 +100,50 @@ export default {
         date: new Date().toISOString().substr(0, 10),
         created_by: '',
         notes: ''
-      }
+      },
+      fromDateMenu: false,
+      toDateMenu: false,
+      fromDate: null,
+      toDate: null,
+      totalImport: 0,
+      totalExport: 0
     };
   },
-  computed: {
-    filteredPaymentHistories() {
-      if (!this.selectedCategoryId) {
-        return this.items;
+  methods: {
+    currentItems(items) {
+      this.totalImport = this.getTotalAmount(items, 3);
+      this.totalExport = this.getTotalAmount(items, 4);
+    },
+    getTotalAmount(items, type) {
+      return items
+        .filter(x => x.category_id == type)
+        .map(x => x.amount)
+        .reduce((a, b) => a + b, 0);
+    },
+    dateFilter(value) {
+      let fromCondition = true;
+      let toCondition = true;
+      if (this.fromDate != null) {
+        fromCondition = value >= this.fromDate;
       }
-      return this.items.filter(x => x.category_id == this.selectedCategoryId);
+      if (this.toDate != null) {
+        toCondition = value <= this.toDate;
+      }
+      return fromCondition && toCondition;
+    },
+    categoryFilter(value) {
+      if (!this.selectedCategoryId) {
+        return true;
+      }
+      return value === this.selectedCategoryId;
+    }
+  },
+  computed: {
+    computedFromDateFormatted() {
+      return toVnFormat(this.fromDate);
+    },
+    computedToDateFormatted() {
+      return toVnFormat(this.toDate);
     }
   }
 };

@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import { toVnFormat } from '@/helpers/date-helper';
 Vue.filter('currency', function(value) {
-  if (!value) {
-    return '';
+  if (!value || value == 0) {
+    return '0 ₫';
   }
   let formatter = new Intl.NumberFormat('vi', {
     style: 'currency',
