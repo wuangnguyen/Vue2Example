@@ -16,7 +16,7 @@
     <template v-slot:item.date="{ item }">
       {{ item.date | date }}
     </template>
-    <template v-slot:item.actions="{ item }">
+    <template v-if="isLoggedIn()" v-slot:item.actions="{ item }">
       <v-icon class="mx-1" small @click="editItem(item)">
         fa-edit
       </v-icon>

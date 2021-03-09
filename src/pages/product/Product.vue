@@ -39,7 +39,7 @@
     <template v-slot:item.in_stock="{ item }">
       {{ item.import_count - item.export_count }}
     </template>
-    <template v-slot:item.actions="{ item }">
+    <template v-if="isLoggedIn()" v-slot:item.actions="{ item }">
       <v-icon class="mx-1" small @click="editItem(item)">
         fa-edit
       </v-icon>

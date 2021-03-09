@@ -10,6 +10,7 @@
       <router-link class="px-2" :to="{ name: 'Product' }"><v-btn outlined>Quản lý sản phẩm</v-btn></router-link>
       <router-link class="px-2" :to="{ name: 'PaymentHistory' }"><v-btn outlined>Quản lý thu chi</v-btn></router-link>
       <v-spacer></v-spacer>
+      <v-btn outlined @click="isLoggedIn() ? logOut() : logIn()">{{ isLoggedIn() ? 'Đăng xuất' : 'Đăng nhập' }}</v-btn>
     </v-app-bar>
 
     <v-main>
@@ -28,9 +29,11 @@
   </v-app>
 </template>
 <script>
+import authenticateService from '@/mixins/authenticate-mixins';
 export default {
   components: {
     loadingOverlay: () => import('@/components/Overlay/LoadingOverlay')
-  }
+  },
+  mixins: [authenticateService]
 };
 </script>

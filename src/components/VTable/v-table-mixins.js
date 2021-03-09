@@ -1,5 +1,7 @@
 import { removeUnicode } from '@/helpers/string-helper';
 import Vue from 'vue';
+import authenticateService from '@/mixins/authenticate-mixins';
+
 export default dataService => {
   return {
     data() {
@@ -12,6 +14,7 @@ export default dataService => {
         item: {}
       };
     },
+    mixins: [authenticateService],
     methods: {
       loadData() {
         let self = this;
@@ -60,6 +63,9 @@ export default dataService => {
         this.showModalForm(item);
       },
       deleteItem(item) {
+        if (!this.isLoggedIn()) {
+          return;
+        }
         this.item = item;
         this.$refs.deleteDialog.showDialog();
       },
