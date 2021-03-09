@@ -15,5 +15,7 @@ Vue.filter('currency', function(value) {
 Vue.filter('date', function(date) {
   return toVnFormat(date);
 });
-
+Vue.filter('dateWithoutTime', function(date) {
+  return toVnFormat(date, true);
+});
 export default {};

@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { productRoute } from '@/pages/product/product-route';
 import { paymentHistoryRoute } from '@/pages/payment-history/payment-history-route';
+import { healthCareRoute } from '@/pages/health-care/health-care-route';
 Vue.use(VueRouter);
 
 var routes = [
@@ -10,7 +11,7 @@ var routes = [
     redirect: '/product'
   }
 ];
-routes.push(productRoute, paymentHistoryRoute);
+routes.push(productRoute, paymentHistoryRoute, healthCareRoute);
 
 const router = new VueRouter({
   mode: 'history',
