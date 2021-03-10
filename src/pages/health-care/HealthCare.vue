@@ -27,6 +27,12 @@
         <confirm-dialog ref="deleteDialog" @close="modalFormClosed" @confirm="handleDelete"></confirm-dialog>
       </v-toolbar>
     </template>
+    <template v-slot:group.header="{ items, headers, isOpen, toggle }">
+      <th :colspan="headers.length">
+        <v-icon left small @click="toggle">{{ isOpen ? 'fa-minus' : 'fa-plus' }} </v-icon>
+        {{ items[0].dateWithoutTime }}
+      </th>
+    </template>
     <template v-slot:item.date="{ item }">
       {{ item.date | date }}
     </template>
@@ -35,12 +41,6 @@
     </template>
     <template v-slot:item.drinks="{ item }">
       <div v-html="item.drinksHtml"></div>
-    </template>
-    <template v-slot:group.header="{ items, headers, isOpen, toggle }">
-      <th :colspan="headers.length">
-        <v-icon left small @click="toggle">{{ isOpen ? 'fa-minus' : 'fa-plus' }} </v-icon>
-        {{ items[0].date | dateWithoutTime }}
-      </th>
     </template>
     <template v-if="isLoggedIn()" v-slot:item.actions="{ item }">
       <v-icon class="mx-1" small @click="editItem(item)">
@@ -99,10 +99,10 @@ export default {
         .getAll()
         .then(response => {
           response.data.forEach(item => {
-            item['foodsHtml'] = item['foods'].replace(/(?:\r\n|\r|\n)/g, '<br />');
-            item['drinksHtml'] = item['drinks'].replace(/(?:\r\n|\r|\n)/g, '<br />');
-            item['date'] = new Date(item['date']);
-            item['dateWithoutTime'] = item['date'].toDateString();
+            item['foodsHtml'] = item.foods.replace(/(?:\r\n|\r|\n)/g, '<br />');
+            item['drinksHtml'] = item.drinks.replace(/(?:\r\n|\r|\n)/g, '<br />');
+            item.date = new Date(item.date);
+            item['dateWithoutTime'] = toVnFormat(item.date, true);
           });
           self.items = response.data;
         })
