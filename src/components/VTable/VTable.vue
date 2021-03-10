@@ -29,6 +29,10 @@ export default {
     itemKey: {
       type: String,
       default: 'id'
+    },
+    height: {
+      type: Number,
+      default: 600
     }
   }
 };

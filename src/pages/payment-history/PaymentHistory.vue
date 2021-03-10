@@ -49,18 +49,16 @@
         fa-trash-alt
       </v-icon>
     </template>
-    <template slot="body.append">
-      <tr class="grey lighten-1">
-        <td :colspan="headers.length">
-          <span class="ma-2">
-            Tổng thu: <b class="money pa-1 rounded green darken-1">{{ totalImport | currency }}</b>
-          </span>
-          /
-          <span class="ma-2">
-            Tổng chi: <b class="money ma-2 pa-1 rounded deep-orange accent-4">{{ totalExport | currency }}</b>
-          </span>
-        </td>
-      </tr>
+    <template v-slot:footer>
+      <div class="pa-4">
+        <span class="ma-2">
+          Tổng thu: <b class="money pa-1 rounded green darken-1">{{ totalImport | currency }}</b>
+        </span>
+        /
+        <span class="ma-2">
+          Tổng chi: <b class="money ma-2 pa-1 rounded deep-orange accent-4">{{ totalExport | currency }}</b>
+        </span>
+      </div>
     </template>
   </v-table>
 </template>
