@@ -2,7 +2,7 @@ import axios from 'axios';
 import { EventBus } from '@/plugins/event-bus.js';
 
 const http = axios.create({
-  baseURL: '/api',
+  baseURL: '/api/v2',
   headers: {
     'Content-type': 'application/json'
   }

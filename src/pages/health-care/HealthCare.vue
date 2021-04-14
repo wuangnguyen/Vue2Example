@@ -42,11 +42,11 @@
     <template v-slot:item.drinks="{ item }">
       <div v-html="item.drinksHtml"></div>
     </template>
-    <template v-if="isLoggedIn()" v-slot:item.actions="{ item }">
-      <v-icon class="mx-1" small @click="editItem(item)">
+    <template v-slot:item.actions="{ item }">
+      <v-icon class="mx-1" small title="cập nhật" @click="editItem(item)">
         fa-edit
       </v-icon>
-      <v-icon class="mx-1" small @click="deleteItem(item)">
+      <v-icon class="mx-1" small title="xoá" @click="deleteItem(item)">
         fa-trash-alt
       </v-icon>
     </template>

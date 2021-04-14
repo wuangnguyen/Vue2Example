@@ -1,6 +1,6 @@
 import http from '@/helpers/http-helper';
 
-class ProductService {
+class TransactionService {
   get(productId) {
     return http.get(`/transactions/${productId}`);
   }
@@ -18,4 +18,4 @@ class ProductService {
   }
 }
 
-export default new ProductService();
+export default new TransactionService();
