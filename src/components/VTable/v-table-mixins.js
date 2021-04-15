@@ -63,9 +63,6 @@ export default dataService => {
         this.showModalForm(item);
       },
       deleteItem(item) {
-        // if (!this.isLoggedIn()) {
-        //   return;
-        // }
         this.item = item;
         this.$refs.deleteDialog.showDialog();
       },

@@ -6,7 +6,7 @@
         <v-spacer></v-spacer>
         <slot name="top-toolbar"></slot>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="onBtnAddClicked">
+        <v-btn color="primary" title="Thêm mới" @click="onBtnAddClicked">
           <v-icon left small>
             fa-plus
           </v-icon>

@@ -20,7 +20,7 @@
           <v-date-picker locale="vi-vn" v-model="toDate" @input="toDateMenu = false"></v-date-picker>
         </v-menu>
         <v-spacer></v-spacer>
-        <v-btn color="secondary" @click="onBtnAddClicked">
+        <v-btn color="secondary" title="Thêm mới" @click="onBtnAddClicked">
           <v-icon small>
             fa-plus
           </v-icon>

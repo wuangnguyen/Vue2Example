@@ -52,10 +52,6 @@ export default dataService => {
       },
       handleUpdate() {
         let self = this;
-        if (!self.isLoggedIn) {
-          self.$refs.baseModalForm.hideDialog(self.model);
-          return;
-        }
         dataService
           .update(self.model)
           .then(() => {

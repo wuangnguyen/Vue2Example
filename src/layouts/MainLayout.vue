@@ -10,8 +10,8 @@
       <router-link class="px-2" :to="{ name: 'Product' }"><v-btn outlined>Sản phẩm</v-btn></router-link>
       <router-link class="px-2" :to="{ name: 'PaymentHistory' }"><v-btn outlined>Thu chi</v-btn></router-link>
       <router-link class="px-2" :to="{ name: 'HealthCare' }"><v-btn outlined>Sức khỏe</v-btn></router-link>
-      <router-link class="px-2" :to="{ name: 'User' }"><v-btn outlined>Chúng chùa</v-btn></router-link>
       <router-link class="px-2" :to="{ name: 'Task' }"><v-btn outlined>Danh mục công việc</v-btn></router-link>
+      <router-link class="px-2" :to="{ name: 'User' }"><v-btn outlined>Chúng chùa</v-btn></router-link>
       <v-spacer></v-spacer>
       <v-btn outlined @click="isLoggedIn() ? logOut() : logIn()">{{ isLoggedIn() ? 'Đăng xuất' : 'Đăng nhập' }}</v-btn>
     </v-app-bar>

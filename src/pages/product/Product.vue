@@ -17,7 +17,7 @@
         <v-spacer></v-spacer>
         <slot name="top-toolbar"></slot>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="onBtnAddClicked">
+        <v-btn color="primary" title="Thêm mới" @click="onBtnAddClicked">
           <v-icon left small>
             fa-plus
           </v-icon>
@@ -27,10 +27,8 @@
       </v-toolbar>
     </template>
     <template v-slot:expanded-item="{ headers, item }">
-      <td :colspan="headers.length">
-        <div class="my-4 ">
-          <component :is="transactionComponent" @close="onTransactionFormClosed" :productId="item.id"></component>
-        </div>
+      <td :colspan="headers.length" class="pa-4">
+        <component :is="transactionComponent" @close="onTransactionFormClosed" :productId="item.id"></component>
       </td>
     </template>
     <template v-slot:item.price="{ item }">

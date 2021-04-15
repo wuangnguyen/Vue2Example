@@ -1,20 +1,23 @@
 <template>
-  <v-table :headers="headers" :items="filteredTransactions" :loading="loading" class="elevation-1 orange lighten-5">
+  <v-table :height="200" :headers="headers" :items="filteredRewards" :loading="loading" class="elevation-1 orange lighten-5">
     <template v-slot:top>
       <v-toolbar flat>
-        <v-select dense class="mt-6" v-model="selectedCategoryId" :items="transactionTypes" item-text="name" item-value="id" label="Loại"></v-select>
+        <v-select dense class="mt-6" v-model="selectedType" :items="rewardTypes" item-text="name" item-value="id" label="Loại"></v-select>
         <v-spacer></v-spacer>
         <v-btn color="secondary" title="Thêm mới" @click="onBtnAddClicked">
           <v-icon small>
             fa-plus
           </v-icon>
         </v-btn>
-        <modal-form ref="form" @close="modalFormClosed" :productId="productId" :model="item" />
+        <modal-form ref="form" @close="modalFormClosed" :userId="userId" :model="item" />
         <confirm-dialog ref="deleteDialog" @close="modalFormClosed" @confirm="handleDelete"></confirm-dialog>
       </v-toolbar>
     </template>
     <template v-slot:item.date="{ item }">
       {{ item.date | date }}
+    </template>
+    <template v-slot:item.type="{ item }">
+      {{ rewardTypes.find(x => x.id == item.type).name }}
     </template>
     <template v-slot:item.actions="{ item }">
       <v-icon class="mx-1" small title="cập nhật" @click="editItem(item)">
@@ -28,57 +31,58 @@
 </template>
 
 <script>
-import transactionService from '@/services/transactionService';
+import rewardService from '@/services/rewardService';
 import tableMixins from '@/components/VTable/v-table-mixins';
 export default {
-  props: ['productId'],
+  props: ['userId'],
   components: {
     vTable: () => import('@/components/VTable/VTable'),
-    modalForm: () => import('./TransactionForm'),
+    modalForm: () => import('./RewardForm'),
     confirmDialog: () => import('@/components/VDialog/ConfirmDialog')
   },
-  mixins: [tableMixins(transactionService)],
+  mixins: [tableMixins(rewardService)],
   data: function() {
     return {
-      transactionTypes: [
-        { id: 0, name: 'Tất cả' },
-        { id: 1, name: 'Nhập' },
-        { id: 2, name: 'Xuất' }
+      rewardTypes: [
+        { id: -1, name: 'Tất cả' },
+        { id: 0, name: 'Khen thưởng' },
+        { id: 1, name: 'Kỷ luật' }
       ],
-      selectedCategoryId: null,
+      selectedType: null,
       displayDeleteDialog: false,
       headers: [
         { text: 'Ngày', value: 'date' },
-        { text: 'Loại', value: 'transaction_type' },
-        { text: 'Số lượng', value: 'quantity' },
+        { text: 'Loại', value: 'type' },
         { text: 'Ghi chú', value: 'notes' },
         { text: '', value: 'actions', sortable: false, align: 'right' }
       ],
       defaultItem: {
         id: -1,
-        category_id: 1,
-        product_id: this.productId,
+        type: 1,
+        user_id: this.userId,
         date: new Date().toISOString().substr(0, 10),
-        quantity: 0,
         notes: ''
       }
     };
   },
   computed: {
-    filteredTransactions() {
-      if (!this.selectedCategoryId) {
+    filteredRewards() {
+      if (this.selectedType == null || this.selectedType == -1) {
         return this.items;
       }
-      return this.items.filter(x => x.category_id == this.selectedCategoryId);
+      return this.items.filter(x => x.type == this.selectedType);
     }
   },
   methods: {
     loadData() {
       let self = this;
       self.loading = true;
-      transactionService
-        .get(self.productId)
+      rewardService
+        .get(self.userId)
         .then(response => {
+          response.data.forEach(item => {
+            item.date = item.date.substr(0, 10);
+          });
           self.items = response.data;
         })
         .catch(e => {
