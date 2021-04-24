@@ -1,5 +1,5 @@
 <template>
-  <v-table :headers="headers" :items="filteredTransactions" :loading="loading" class="elevation-1 orange lighten-5">
+  <v-table :height="300" :headers="headers" :items="filteredTransactions" :loading="loading" class="elevation-1 orange lighten-5">
     <template v-slot:top>
       <v-toolbar flat>
         <v-select dense class="mt-6" v-model="selectedCategoryId" :items="transactionTypes" item-text="name" item-value="id" label="Loại"></v-select>

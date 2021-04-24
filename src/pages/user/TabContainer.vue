@@ -8,10 +8,6 @@
         <component :is="item.component" :userId="userId"></component>
       </v-tab-item>
     </v-tabs>
-
-    <!-- <v-tabs-items v-model="tab">
-      
-    </v-tabs-items> -->
   </div>
 </template>
 <script>
@@ -24,6 +20,10 @@ export default {
         {
           title: 'Phân công',
           component: () => import('@/pages/scheduler/Scheduler')
+        },
+        {
+          title: 'Tiền công',
+          component: () => import('@/pages/salary/Salary')
         },
         {
           title: 'Khen T/KL',

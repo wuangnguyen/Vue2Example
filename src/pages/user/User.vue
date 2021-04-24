@@ -36,9 +36,6 @@
       <v-icon class="mx-1" small title="cập nhật" @click="editItem(item)">
         fa-edit
       </v-icon>
-      <v-icon class="mx-1" title="khen thưởng/kỷ luật" small @click="openReward(item)">
-        fa-gift
-      </v-icon>
       <v-icon class="mx-1" small title="xoá" @click="deleteItem(item)">
         fa-trash-alt
       </v-icon>
