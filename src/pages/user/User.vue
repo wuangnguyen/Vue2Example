@@ -28,7 +28,7 @@
       </v-toolbar>
     </template>
     <template v-slot:expanded-item="{ headers, item }">
-      <td :colspan="headers.length" class="py-4">
+      <td :colspan="headers.length" class="pa-0">
         <component :is="tabContainerComponent" :userId="item.id"></component>
       </td>
     </template>

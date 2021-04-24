@@ -1,18 +1,17 @@
 <template>
   <div>
-    <v-tabs v-model="tab" grow>
+    <v-tabs v-model="tab" vertical>
       <v-tab v-for="item in items" :key="item.title">
         {{ item.title }}
       </v-tab>
+      <v-tab-item v-for="item in items" :key="item.title">
+        <component :is="item.component" :userId="userId"></component>
+      </v-tab-item>
     </v-tabs>
 
-    <v-tabs-items v-model="tab">
-      <v-tab-item v-for="item in items" :key="item.title">
-        <div class="mt-2">
-          <component :is="item.component" :userId="userId"></component>
-        </div>
-      </v-tab-item>
-    </v-tabs-items>
+    <!-- <v-tabs-items v-model="tab">
+      
+    </v-tabs-items> -->
   </div>
 </template>
 <script>
@@ -23,12 +22,12 @@ export default {
       tab: null,
       items: [
         {
-          title: 'Khen thưởng/Kỷ luật',
-          component: () => import('@/pages/reward/Reward')
+          title: 'Phân công',
+          component: () => import('@/pages/scheduler/Scheduler')
         },
         {
-          title: 'Phân công công việc',
-          component: () => import('./Schedule')
+          title: 'Khen T/KL',
+          component: () => import('@/pages/reward/Reward')
         }
       ]
     };
