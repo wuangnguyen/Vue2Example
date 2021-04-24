@@ -58,6 +58,10 @@
         <span class="ma-2">
           Tổng chi: <b class="money ma-2 pa-1 rounded deep-orange accent-4">{{ totalExport | currency }}</b>
         </span>
+        /
+        <span class="ma-2">
+          Tổng thu - chi: <b class="ma-2 pa-1 rounded">{{ (totalImport - totalExport) | currency }}</b>
+        </span>
       </div>
     </template>
   </v-table>
