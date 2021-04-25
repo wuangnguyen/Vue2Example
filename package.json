@@ -14,7 +14,6 @@
     "@progress/kendo-ui": "^2021.1.330",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "firebase": "^8.4.2",
     "vue": "^2.6.11",
     "vue-router": "^3.5.1",
     "vue-toast-notification": "^0.6.0",

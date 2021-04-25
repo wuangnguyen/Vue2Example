@@ -5,7 +5,7 @@
         {{ item.title }}
       </v-tab>
       <v-tab-item v-for="item in items" :key="item.title">
-        <component :is="item.component" :userId="userId"></component>
+        <component :is="item.component" :tabActive="tab" :userId="userId"></component>
       </v-tab-item>
     </v-tabs>
   </div>

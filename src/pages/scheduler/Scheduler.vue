@@ -19,10 +19,8 @@
       @resize="onResize"
       @save="onSave"
     >
-      <kendo-scheduler-view :type="'day'"></kendo-scheduler-view>
       <kendo-scheduler-view :selected="true" :type="'week'"></kendo-scheduler-view>
       <kendo-scheduler-view :type="'month'"></kendo-scheduler-view>
-      <kendo-scheduler-view :type="'agenda'"></kendo-scheduler-view>
     </kendo-scheduler>
     <script id="eventTemplate" type="text/x-kendo-template">
       <h3 class="task_name">#: taskName #</h3>

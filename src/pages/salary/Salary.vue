@@ -49,7 +49,7 @@ import { toVnFormat } from '@/helpers/date-helper';
 import schedulerAppointmentService from '@/services/schedulerAppointmentService';
 import tableMixins from '@/components/VTable/v-table-mixins';
 export default {
-  props: ['userId'],
+  props: ['userId', 'tabActive'],
   components: {
     vTable: () => import('@/components/VTable/VTable')
   },
@@ -84,6 +84,11 @@ export default {
     },
     toDate() {
       this.loadData();
+    },
+    tabActive(value) {
+      if (value === 1) {
+        this.loadData();
+      }
     }
   },
   methods: {
@@ -100,7 +105,6 @@ export default {
     loadData() {
       let self = this;
       self.loading = true;
-
       schedulerAppointmentService
         .getSalaryItems(this.userId, this.fromDate, this.toDate)
         .then(response => {
