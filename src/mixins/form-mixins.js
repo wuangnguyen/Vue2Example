@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import { toVnFormat } from '@/helpers/date-helper';
-import authenticateService from '@/mixins/authenticate-mixins';
 export default dataService => {
   return {
     props: {
@@ -11,7 +10,6 @@ export default dataService => {
         return toVnFormat(this.model.date);
       }
     },
-    mixins: [authenticateService],
     methods: {
       showModalForm() {
         this.$refs.baseModalForm.showDialog();

@@ -1,7 +1,7 @@
 export const healthCareRoute = {
   path: '/health-care',
   component: () => import('@/layouts/MainLayout'),
-  meta: { title: 'Quản lý sức khỏe' },
+  meta: { title: 'Quản lý sức khỏe', authRequired: true },
   children: [
     {
       name: 'HealthCare',

@@ -1,22 +1,17 @@
-const passwordKey = 'is_authenticated';
+import identity from '@/helpers/identity-helper';
 export default {
   methods: {
-    logIn() {
-      let password = prompt('Password:');
-      if (password === 'GX8uNA6Q') {
-        localStorage.setItem(passwordKey, true);
-        this.reload();
-      }
-    },
     isLoggedIn() {
-      return !!localStorage.getItem(passwordKey);
+      return identity.isAuthenticated();
     },
     logOut() {
-      localStorage.removeItem(passwordKey);
-      this.reload();
+      localStorage.removeItem('isAuthenticated');
+      identity.logout().then(() => {
+        this.$router.replace({ path: '/login' });
+      });
     },
-    reload() {
-      window.location = window.location.href;
+    changePassword() {
+      this.$router.push({ path: '/change-password' });
     }
   }
 };

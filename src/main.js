@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import firebase from 'firebase/app';
 import router from './router';
 import vuetify from './plugins/vuetify';
 import filters from './filters';
@@ -19,7 +18,12 @@ var firebaseConfig = {
   appId: '1:718340589155:web:6eb0937d3b819a09a51a56'
 };
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+window.firebase.initializeApp(firebaseConfig);
+window.firebase.auth().onAuthStateChanged(user => {
+  if (user != null) {
+    localStorage.setItem('isAuthenticated', true);
+  }
+});
 
 Vue.use(VueToast, {
   duration: 5000,

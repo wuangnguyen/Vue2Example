@@ -13,7 +13,21 @@
       <router-link class="px-2" :to="{ name: 'Task' }"><v-btn outlined>Danh mục công việc</v-btn></router-link>
       <router-link class="px-2" :to="{ name: 'User' }"><v-btn outlined>Chúng chùa</v-btn></router-link>
       <v-spacer></v-spacer>
-      <v-btn outlined @click="isLoggedIn() ? logOut() : logIn()">{{ isLoggedIn() ? 'Đăng xuất' : 'Đăng nhập' }}</v-btn>
+
+      <v-menu v-if="isLoggedIn()" bottom offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <span v-bind="attrs" v-on="on">quang.nnd.hcmus@gmail.com</span>
+        </template>
+
+        <v-list>
+          <v-list-item>
+            <v-list-item-title @click="logOut()">Đăng xuất</v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title @click="changePassword()">Đổi mật khẩu</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <v-main>
@@ -40,3 +54,8 @@ export default {
   mixins: [authenticateService]
 };
 </script>
+<style scoped>
+.v-list-item {
+  cursor: pointer;
+}
+</style>

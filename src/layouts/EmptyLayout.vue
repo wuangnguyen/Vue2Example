@@ -14,11 +14,22 @@
         </v-row>
       </v-container>
     </v-main>
+    <loading-overlay></loading-overlay>
   </v-app>
 </template>
-<style lang="scss">
+<script>
+export default {
+  components: {
+    loadingOverlay: () => import('@/components/Overlay/LoadingOverlay')
+  }
+};
+</script>
+<style lang="scss" scoped>
 .account-container {
   max-width: 600px;
   margin: 0 auto;
+}
+.v-main {
+  background-image: linear-gradient(to top, #6a85b6 0%, #bac8e0 100%);
 }
 </style>

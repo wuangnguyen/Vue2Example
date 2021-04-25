@@ -1,7 +1,7 @@
 export const userRoute = {
   path: '/user',
   component: () => import('@/layouts/MainLayout'),
-  meta: { title: 'Quản lý chúng chùa' },
+  meta: { title: 'Quản lý chúng chùa', authRequired: true },
   children: [
     {
       name: 'User',

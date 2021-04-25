@@ -5,10 +5,11 @@
       <v-form ref="loginForm" v-model="valid" lazy-validation>
         <v-row>
           <v-col cols="12">
-            <v-text-field v-model="loginEmail" :rules="loginEmailRules" label="E-mail" required></v-text-field>
+            <v-text-field name="email" v-model="loginEmail" :rules="loginEmailRules" label="E-mail" required></v-text-field>
           </v-col>
           <v-col cols="12">
             <v-text-field
+              name="password"
               v-model="loginPassword"
               :append-icon="show1 ? 'fa fa-eye-slash' : 'fa fa-eye'"
               :rules="[rules.required]"
@@ -28,7 +29,9 @@
   </v-card>
 </template>
 <script>
-import * as firebase from 'firebase/app';
+import $ from 'jquery';
+import identity from '@/helpers/identity-helper';
+import Vue from 'vue';
 export default {
   data: function() {
     return {
@@ -45,17 +48,31 @@ export default {
   methods: {
     validate() {
       if (this.$refs.loginForm.validate()) {
-        firebase
-          .auth()
-          .signInWithEmailAndPassword(this.loginEmail, this.loginPassword)
+        identity
+          .login(this.loginEmail, this.loginPassword)
           .then(() => {
-            this.$router.replace({ name: 'Product' });
+            this.$router.replace({ path: '/' });
           })
           .catch(err => {
-            window.alert(err.message);
+            console.log(err);
+            switch (err.code) {
+              case 'auth/wrong-password':
+                Vue.$toast.error('Mật khẩu không đúng');
+                break;
+              case 'auth/user-not-found':
+                Vue.$toast.error('Email không không đúng');
+                break;
+              default:
+                break;
+            }
           });
       }
     }
+  },
+  mounted() {
+    $("input[name='email'], input[name='password']")
+      .prev()
+      .addClass('v-label--active');
   }
 };
 </script>

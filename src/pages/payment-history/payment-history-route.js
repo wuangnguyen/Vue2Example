@@ -1,7 +1,7 @@
 export const paymentHistoryRoute = {
   path: '/payment-history',
   component: () => import('@/layouts/MainLayout'),
-  meta: { title: 'Quản lý thu chi' },
+  meta: { title: 'Quản lý thu chi', authRequired: true },
   children: [
     {
       name: 'PaymentHistory',
