@@ -1,7 +1,10 @@
 import { EventBus } from '@/plugins/event-bus.js';
 export default {
+  currentUser: () => {
+    return localStorage.getItem('currentUser');
+  },
   isAuthenticated: () => {
-    return localStorage.getItem('isAuthenticated');
+    return localStorage.getItem('currentUser') != null;
   },
   login: (loginEmail, loginPassword) => {
     return new Promise((resolve, reject) => {
@@ -27,7 +30,7 @@ export default {
         .auth()
         .signOut()
         .then(() => {
-          localStorage.removeItem('isAuthenticated');
+          localStorage.removeItem('currentUser');
           resolve();
         })
         .catch(err => {

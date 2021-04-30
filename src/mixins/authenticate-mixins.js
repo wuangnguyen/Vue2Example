@@ -1,11 +1,13 @@
 import identity from '@/helpers/identity-helper';
 export default {
   methods: {
+    loginEmail() {
+      return identity.currentUser();
+    },
     isLoggedIn() {
       return identity.isAuthenticated();
     },
     logOut() {
-      localStorage.removeItem('isAuthenticated');
       identity.logout().then(() => {
         this.$router.replace({ path: '/login' });
       });

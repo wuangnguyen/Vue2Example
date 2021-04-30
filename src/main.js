@@ -21,7 +21,7 @@ var firebaseConfig = {
 window.firebase.initializeApp(firebaseConfig);
 window.firebase.auth().onAuthStateChanged(user => {
   if (user != null) {
-    localStorage.setItem('isAuthenticated', true);
+    localStorage.setItem('currentUser', user.email);
   }
 });
 

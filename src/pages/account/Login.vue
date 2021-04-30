@@ -69,6 +69,9 @@ export default {
       }
     }
   },
+  created() {
+    identity.logout();
+  },
   mounted() {
     $("input[name='email'], input[name='password']")
       .prev()

@@ -16,7 +16,7 @@
 
       <v-menu v-if="isLoggedIn()" bottom offset-y>
         <template v-slot:activator="{ on, attrs }">
-          <span v-bind="attrs" v-on="on">quang.nnd.hcmus@gmail.com</span>
+          <span v-bind="attrs" v-on="on">{{ loginEmail() }}</span>
         </template>
 
         <v-list>
