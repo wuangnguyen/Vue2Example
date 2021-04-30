@@ -203,6 +203,8 @@ export default {
           if (!selectedId) {
             this.select(0);
             item = e.sender.dataItem(0);
+            eventItem.price = item.price;
+            priceTextBox.value(item.price);
           } else {
             let dataItem = e.sender.dataSource.data().find(x => x.id === selectedId);
             let index = e.sender.dataSource.data().indexOf(dataItem);
@@ -211,8 +213,6 @@ export default {
           }
           eventItem.taskId = item.id;
           eventItem.taskName = item.name;
-          eventItem.price = item.price;
-          priceTextBox.value(item.price);
         }
       });
     },
